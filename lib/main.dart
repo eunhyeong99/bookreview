@@ -1,13 +1,15 @@
 import 'package:bookreview/firebase_options.dart';
 import 'package:bookreview/src/app.dart';
+import 'package:bookreview/src/common/cubit/app_data_load_cubit.dart';
 import 'package:bookreview/src/common/interceptor/custom_interceptor.dart';
 import 'package:bookreview/src/common/repository/naver_api_repository.dart';
+import 'package:bookreview/src/splash/cubit/splash_cubit.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   Dio dio = Dio(BaseOptions(baseUrl: 'https://openapi.naver.com/'));
@@ -34,8 +36,11 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MultiBlocProvider(
-        providers: [],
-        child: App(),
+        providers: [
+          BlocProvider(create: (_) => SplashCubit()),
+          BlocProvider(create: (_) => AppDataLoadCubit()),
+        ],
+        child: const App(),
       ),
     );
   }
