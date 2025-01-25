@@ -12,7 +12,20 @@
           "package_name": "com.ReCo.bookreview.bookreview"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "771412061957-9inui7j7tkufl06aoqbj4lmku0ajmaom.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ReCo.bookreview.bookreview",
+            "certificate_hash": "5a96d507c68db911ecac797c1aa1c2a7da26106d"
+          }
+        },
+        {
+          "client_id": "771412061957-qdo5pttvkcpuu9cipl0kqdjp18ke72mv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBozZLK9UCrudD6Qa1vk2chDgSnhezgubY"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "771412061957-qdo5pttvkcpuu9cipl0kqdjp18ke72mv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "771412061957-ifgmbo9idm4g4camue9d7c4p1frjv12f.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ReCo.bookreview.bookreview"
+              }
+            }
+          ]
         }
       }
     }
