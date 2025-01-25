@@ -13,7 +13,6 @@ class SplashPage extends StatelessWidget {
     return BlocListener<AppDataLoadCubit,AppDataLoadState>(
       listenWhen: (previous, current) => current.status == CommonStateStatus.loaded,
       listener: (context,state){
-        print("AppDataLoadCubit State: ${state.status}");
         context.read<SplashCubit>().changeLoadStatus(LoadStatus.auth_check);
       },
       child: Scaffold(

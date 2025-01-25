@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "771412061957",
+    "project_id": "review-app-book",
+    "storage_bucket": "review-app-book.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:771412061957:android:00563b20735634e3e3d16c",
+        "android_client_info": {
+          "package_name": "com.ReCo.bookreview.bookreview"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBozZLK9UCrudD6Qa1vk2chDgSnhezgubY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
