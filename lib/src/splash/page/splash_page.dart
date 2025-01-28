@@ -1,5 +1,6 @@
 import 'package:bookreview/src/common/components/app_font.dart';
 import 'package:bookreview/src/common/cubit/app_data_load_cubit.dart';
+import 'package:bookreview/src/common/cubit/authentication_cubit.dart';
 import 'package:bookreview/src/common/enum/common_state_status.dart';
 import 'package:bookreview/src/splash/cubit/splash_cubit.dart';
 import 'package:flutter/material.dart';
@@ -10,10 +11,12 @@ class SplashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AppDataLoadCubit,AppDataLoadState>(
-      listenWhen: (previous, current) => current.status == CommonStateStatus.loaded,
-      listener: (context,state){
+    return BlocListener<AppDataLoadCubit, AppDataLoadState>(
+      listenWhen: (previous, current) =>
+          current.status == CommonStateStatus.loaded,
+      listener: (context, state) {
         context.read<SplashCubit>().changeLoadStatus(LoadStatus.auth_check);
+        context.read<AuthenticationCubit>().init();
       },
       child: Scaffold(
         body: Stack(

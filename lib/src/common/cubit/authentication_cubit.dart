@@ -3,8 +3,10 @@ import 'package:bookreview/src/common/model/user_model.dart';
 import 'package:bookreview/src/common/repository/authentication_repository.dart';
 import 'package:bookreview/src/common/repository/user_repository.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 
-class AuthenticationCubit extends Cubit<AuthenticationState> {
+class AuthenticationCubit extends Cubit<AuthenticationState>
+    with ChangeNotifier {
   final AuthenticationRepository _authenticationRepository;
   final UserRepository _userRepository;
 
@@ -15,6 +17,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     _authenticationRepository.user.listen((user) {
       _userStateChangedEvent(user);
     });
+    _authenticationRepository.logout();
   }
 
   void _userStateChangedEvent(UserModel? user) async {
@@ -23,7 +26,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     } else {
       var result = await _userRepository.findUserOne(user.uid!);
       if (result == null) {
-        emit(state.copyWith(status: AuthenticationStatus.unAuthenticated));
+        emit(state.copyWith(
+            user: user, status: AuthenticationStatus.unAuthenticated));
       } else {
         emit(
           state.copyWith(
@@ -33,17 +37,24 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         );
       }
     }
+    notifyListeners();
   }
-  void googleLogin()async{
+
+  void googleLogin() async {
     await _authenticationRepository.signInWithGoogle();
   }
-  void appleLogin()async{
+
+  void appleLogin() async {
     await _authenticationRepository.signInWithApple();
   }
 
   @override
-  void onChange(Change<AuthenticationState> change){
+  void onChange(Change<AuthenticationState> change) {
     super.onChange(change);
+  }
+
+  void reloadAuth() {
+    _userStateChangedEvent(state.user);
   }
 }
 
@@ -51,6 +62,7 @@ enum AuthenticationStatus {
   authentication,
   unAuthenticated,
   unknown,
+  init,
   error,
 }
 
@@ -59,7 +71,7 @@ class AuthenticationState extends Equatable {
   final UserModel? user;
 
   const AuthenticationState({
-    this.status = AuthenticationStatus.unknown,
+    this.status = AuthenticationStatus.init,
     this.user,
   });
 
