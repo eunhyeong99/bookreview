@@ -1,7 +1,10 @@
 import 'package:bookreview/src/common/cubit/authentication_cubit.dart';
+import 'package:bookreview/src/common/repository/naver_api_repository.dart';
 import 'package:bookreview/src/common/repository/user_repository.dart';
 import 'package:bookreview/src/home/page/home_page.dart';
 import 'package:bookreview/src/root/page/root_page.dart';
+import 'package:bookreview/src/search/cubit/search_book_cubit.dart';
+import 'package:bookreview/src/search/page/search_page.dart';
 import 'package:bookreview/src/signup/cubit/signup_cubit.dart';
 import 'package:bookreview/src/signup/page/signup_page.dart';
 import 'package:flutter/material.dart';
@@ -28,10 +31,13 @@ class _AppState extends State<App> {
       refreshListenable: context.read<AuthenticationCubit>(),
       redirect: (context, state) {
         var authStatus = context.read<AuthenticationCubit>().state.status;
-        print("status : ${context.read<AuthenticationCubit>().state.status}");
+        var blockPageInAuthenticationState = ['/', '/login', '/signup'];
         switch (authStatus) {
           case AuthenticationStatus.authentication:
-            return '/home';
+            return blockPageInAuthenticationState
+                    .contains(state.matchedLocation)
+                ? '/home'
+                : state.matchedLocation;
           case AuthenticationStatus.unAuthenticated:
             return '/signup';
           case AuthenticationStatus.unknown:
@@ -55,6 +61,13 @@ class _AppState extends State<App> {
         GoRoute(
           path: '/home',
           builder: (context, state) => const HomePage(),
+        ),
+        GoRoute(
+          path: '/search',
+          builder: (context, state) => BlocProvider(
+            create: (context) => SearchBookCubit(context.read<NaverBookRepository>()),
+            child: const SearchPage(),
+          ),
         ),
         GoRoute(
           path: '/signup',

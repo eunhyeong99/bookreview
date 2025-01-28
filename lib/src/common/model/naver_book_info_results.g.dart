@@ -9,10 +9,10 @@ part of 'naver_book_info_results.dart';
 NaverBookInfoResults _$NaverBookInfoResultsFromJson(
         Map<String, dynamic> json) =>
     NaverBookInfoResults(
-      (json['total'] as num?)?.toInt(),
-      (json['start'] as num?)?.toInt(),
-      (json['display'] as num?)?.toInt(),
-      (json['items'] as List<dynamic>?)
+      total: (json['total'] as num?)?.toInt(),
+      start: (json['start'] as num?)?.toInt(),
+      display: (json['display'] as num?)?.toInt(),
+      items: (json['items'] as List<dynamic>?)
           ?.map((e) => NaverBookInfo.fromJson(e as Map<String, dynamic>))
           .toList(),
     );

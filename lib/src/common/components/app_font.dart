@@ -7,6 +7,8 @@ class AppFont extends StatelessWidget {
   final FontWeight? fontWeight;
   final Color? color;
   final TextAlign? textAlign;
+  final int? maxLine;
+  final TextOverflow? overflow;
 
   const AppFont(
     this.text, {
@@ -15,6 +17,8 @@ class AppFont extends StatelessWidget {
     this.textAlign = TextAlign.left,
     this.size = 15,
     this.color = Colors.white,
+    this.maxLine,
+    this.overflow,
   });
 
   @override
@@ -22,11 +26,13 @@ class AppFont extends StatelessWidget {
     return Text(
       text,
       textAlign: textAlign,
+      overflow: overflow,
       style: GoogleFonts.notoSans(
         fontSize: size,
         fontWeight: fontWeight,
         color: color,
       ),
+      maxLines: maxLine,
     );
   }
 }
