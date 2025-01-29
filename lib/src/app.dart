@@ -1,7 +1,12 @@
 import 'package:bookreview/src/common/cubit/authentication_cubit.dart';
+import 'package:bookreview/src/common/model/naver_book_info.dart';
+import 'package:bookreview/src/common/repository/book_review_info_repository.dart';
 import 'package:bookreview/src/common/repository/naver_api_repository.dart';
+import 'package:bookreview/src/common/repository/review_repository.dart';
 import 'package:bookreview/src/common/repository/user_repository.dart';
 import 'package:bookreview/src/home/page/home_page.dart';
+import 'package:bookreview/src/review/cubit/review_cubit.dart';
+import 'package:bookreview/src/review/page/review_page.dart';
 import 'package:bookreview/src/root/page/root_page.dart';
 import 'package:bookreview/src/search/cubit/search_book_cubit.dart';
 import 'package:bookreview/src/search/page/search_page.dart';
@@ -11,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import 'book_info/page/book_info_page.dart';
 import 'login/page/login_page.dart';
 
 class App extends StatefulWidget {
@@ -63,9 +69,31 @@ class _AppState extends State<App> {
           builder: (context, state) => const HomePage(),
         ),
         GoRoute(
+          path: '/info',
+          builder: (context, state) =>
+              BookInfoPage(state.extra as NaverBookInfo),
+        ),
+        GoRoute(
+          path: '/review',
+          builder: (context, state) => BlocProvider(
+            create: (context) {
+              var bookInfo = state.extra as NaverBookInfo;
+              var uid = context.read<AuthenticationCubit>().state.user!.uid!;
+              return ReviewCubit(
+                context.read<BookReviewInfoRepository>(),
+                context.read<ReviewRepository>(),
+                uid,
+                bookInfo,
+              );
+            },
+            child: ReviewPage(state.extra as NaverBookInfo),
+          ),
+        ),
+        GoRoute(
           path: '/search',
           builder: (context, state) => BlocProvider(
-            create: (context) => SearchBookCubit(context.read<NaverBookRepository>()),
+            create: (context) =>
+                SearchBookCubit(context.read<NaverBookRepository>()),
             child: const SearchPage(),
           ),
         ),

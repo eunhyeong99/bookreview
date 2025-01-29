@@ -84,44 +84,50 @@ class _SearchResultViewState extends State<_SearchResultView> {
       controller: controller,
       itemBuilder: (context, index) {
         NaverBookInfo bookInfo = cubit.state.result!.items![index];
-        return Row(
-          children: [
-            SizedBox(
-              width: 75,
-              height: 115,
-              child: Image.network(
-                bookInfo.image ?? '',
+        return GestureDetector(
+          onTap: (){
+            context.push('/info',extra: bookInfo);
+          },
+          behavior: HitTestBehavior.translucent,
+          child: Row(
+            children: [
+              SizedBox(
+                width: 75,
+                height: 115,
+                child: Image.network(
+                  bookInfo.image ?? '',
+                ),
               ),
-            ),
-            const SizedBox(width: 15),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  AppFont(
-                    bookInfo.title ?? '',
-                    maxLine: 2,
-                    overflow: TextOverflow.ellipsis,
-                    size: 16,
-                  ),
-                  SizedBox(height: 7),
-                  AppFont(
-                    bookInfo.author ?? '',
-                    size: 13,
-                    color: Color(0xff878787),
-                  ),
-                  SizedBox(height: 13),
-                  AppFont(
-                    bookInfo.description ?? '',
-                    size: 13,
-                    maxLine: 2,
-                    overflow: TextOverflow.ellipsis,
-                    color: Color(0xff838383),
-                  ),
-                ],
+              const SizedBox(width: 15),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    AppFont(
+                      bookInfo.title ?? '',
+                      maxLine: 2,
+                      overflow: TextOverflow.ellipsis,
+                      size: 16,
+                    ),
+                    SizedBox(height: 7),
+                    AppFont(
+                      bookInfo.author ?? '',
+                      size: 13,
+                      color: Color(0xff878787),
+                    ),
+                    SizedBox(height: 13),
+                    AppFont(
+                      bookInfo.description ?? '',
+                      size: 13,
+                      maxLine: 2,
+                      overflow: TextOverflow.ellipsis,
+                      color: Color(0xff838383),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
       separatorBuilder: (context, index) => Padding(

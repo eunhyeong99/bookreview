@@ -17,17 +17,20 @@ class HomePage extends StatelessWidget {
           padding: const EdgeInsets.all(10),
           child: BlocBuilder<AuthenticationCubit, AuthenticationState>(
               builder: (context, state) {
-            return Row(
-              children: [
-                CircleAvatar(
-                  backgroundColor: Colors.grey,
-                  backgroundImage: state.user?.profile == null
-                      ? Image.asset('assets/images/default_avatar.png').image
-                      : Image.network(state.user!.profile!).image,
-                ),
-                const SizedBox(width: 15),
-                AppFont(state.user?.name ?? '', size: 16),
-              ],
+            return GestureDetector(
+              onTap: context.read<AuthenticationCubit>().logout,
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.grey,
+                    backgroundImage: state.user?.profile == null
+                        ? Image.asset('assets/images/default_avatar.png').image
+                        : Image.network(state.user!.profile!).image,
+                  ),
+                  const SizedBox(width: 15),
+                  AppFont(state.user?.name ?? '', size: 16),
+                ],
+              ),
             );
           }),
         ),

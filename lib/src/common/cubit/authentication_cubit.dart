@@ -48,6 +48,10 @@ class AuthenticationCubit extends Cubit<AuthenticationState>
     await _authenticationRepository.signInWithApple();
   }
 
+  void logout()async{
+    await _authenticationRepository.logout();
+  }
+
   @override
   void onChange(Change<AuthenticationState> change) {
     super.onChange(change);

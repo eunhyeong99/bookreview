@@ -29,6 +29,7 @@ class NaverBookInfo extends Equatable {
 
   factory NaverBookInfo.fromJson(Map<String, dynamic> json) =>
       _$NaverBookInfoFromJson(json);
+  Map<String,dynamic> toJson() => _$NaverBookInfoToJson(this);
 
   @override
   List<Object?> get props => [
