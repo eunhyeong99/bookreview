@@ -1,8 +1,10 @@
+import 'package:bookreview/src/book_info/cubit/book_info_cubit.dart';
 import 'package:bookreview/src/common/components/app_divider.dart';
 import 'package:bookreview/src/common/components/app_font.dart';
 import 'package:bookreview/src/common/components/btn.dart';
 import 'package:bookreview/src/common/model/naver_book_info.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
@@ -47,9 +49,18 @@ class BookInfoPage extends StatelessWidget {
           top: 20,
           bottom: 20 + MediaQuery.of(context).padding.bottom,
         ),
-        child: Btn(onTap: () {
-          context.push('/review',extra: bookInfo,);
-        }, text: '리뷰하기'),
+        child: Btn(
+          onTap: () async {
+            var isNeedsRefresh = await context.push<bool?>(
+              '/review',
+              extra: bookInfo,
+            );
+            if (isNeedsRefresh != null && isNeedsRefresh!) {
+              context.read<BookInfoCubit>().refresh();
+            }
+          },
+          text: '리뷰하기',
+        ),
       ),
     );
   }
@@ -80,9 +91,37 @@ class _ReviewerLayer extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
           const SizedBox(height: 20),
-          SizedBox(
-            height: 70,
-            child: _noneReviewer(),
+          BlocBuilder<BookInfoCubit, BookInfoState>(
+            builder: (context, state) {
+              if (state.bookReviewInfo == null) {
+                return SizedBox(height: 70, child: _noneReviewer());
+              } else {
+                return SizedBox(
+                  height: 70,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          context.push(
+                              '/review-detail/${state.bookReviewInfo!.bookId}/${state.reviewers![index].uid}',
+                              extra: state.bookReviewInfo!.naverBookInfo!);
+                        },
+                        child: CircleAvatar(
+                          backgroundColor: Colors.grey,
+                          radius: 32,
+                          backgroundImage: Image.network(
+                                  state.reviewers![index].profile ?? '')
+                              .image,
+                        ),
+                      );
+                    },
+                    separatorBuilder: (context, index) => SizedBox(width: 20),
+                    itemCount: state.reviewers?.length ?? 0,
+                  ),
+                );
+              }
+            },
           ),
         ],
       ),
@@ -133,46 +172,58 @@ class _BookDisplayLayer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(7),
-          child: SizedBox(
-            width: 152,
-            height: 227,
-            child: Image.network(
-              bookInfo.image ?? '',
-              fit: BoxFit.cover,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+      child: Column(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(7),
+            child: SizedBox(
+              width: 152,
+              height: 227,
+              child: Image.network(
+                bookInfo.image ?? '',
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SvgPicture.asset('assets/svg/icons/icon_star.svg'),
-            const SizedBox(width: 5),
-            AppFont(
-              '8.88',
-              size: 16,
-              color: Color(0xfff4aa2b),
-            ),
-          ],
-        ),
-        SizedBox(height: 10),
-        AppFont(
-          bookInfo.title ?? '',
-          size: 16,
-          fontWeight: FontWeight.bold,
-          maxLine: 2,
-          overflow: TextOverflow.ellipsis,
-        ),
-        SizedBox(width: 5),
-        AppFont(
-          bookInfo.author ?? '',
-          size: 12,
-          color: Color(0xff878787),
-        ),
-      ],
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset('assets/svg/icons/icon_star.svg'),
+              const SizedBox(width: 5),
+              BlocBuilder<BookInfoCubit, BookInfoState>(
+                builder: (context, state) {
+                  return AppFont(
+                    state.bookReviewInfo == null
+                        ? '리뷰 점수 없음'
+                        : (state.bookReviewInfo!.totalCounts! /
+                                state.bookReviewInfo!.reviewerUids!.length)
+                            .toStringAsFixed(2),
+                    size: 16,
+                    color: Color(0xfff4aa2b),
+                  );
+                },
+              ),
+            ],
+          ),
+          SizedBox(height: 10),
+          AppFont(
+            bookInfo.title ?? '',
+            textAlign: TextAlign.center,
+            size: 16,
+            fontWeight: FontWeight.bold,
+            maxLine: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          SizedBox(width: 5),
+          AppFont(
+            bookInfo.author ?? '',
+            size: 12,
+            color: Color(0xff878787),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -7,17 +7,18 @@ import 'package:bookreview/src/common/repository/book_review_info_repository.dar
 import 'package:bookreview/src/common/repository/review_repository.dart';
 import 'package:equatable/equatable.dart';
 
-class ReviewCubit extends Cubit<ReviewState> {
+class ReviewWriteCubit extends Cubit<ReviewWriteState> {
+
   final BookReviewInfoRepository _bookReviewInfoRepository;
   final ReviewRepository _reviewRepository;
 
-  ReviewCubit(
+  ReviewWriteCubit(
     this._bookReviewInfoRepository,
     this._reviewRepository,
     String uid,
     NaverBookInfo naverBookInfo,
   ) : super(
-          ReviewState(
+          ReviewWriteState(
             reviewInfo: Review(
               bookId: naverBookInfo.isbn,
               reviewerUid: uid,
@@ -114,14 +115,14 @@ class ReviewCubit extends Cubit<ReviewState> {
   }
 }
 
-class ReviewState extends Equatable {
+class ReviewWriteState extends Equatable {
   final CommonStateStatus status;
   final Review? reviewInfo;
   final bool? isEditMode;
   final double? beforeValue;
   final String? message;
 
-  const ReviewState({
+  const ReviewWriteState({
     this.status = CommonStateStatus.init,
     this.reviewInfo,
     this.isEditMode,
@@ -129,14 +130,14 @@ class ReviewState extends Equatable {
     this.message,
   });
 
-  ReviewState copyWith({
+  ReviewWriteState copyWith({
     CommonStateStatus? status,
     Review? reviewInfo,
     bool? isEditMode,
     double? beforeValue,
     String? message,
   }) {
-    return ReviewState(
+    return ReviewWriteState(
       status: status ?? this.status,
       reviewInfo: reviewInfo ?? this.reviewInfo,
       isEditMode: isEditMode ?? this.isEditMode,

@@ -11,6 +11,7 @@ class Review extends Equatable {
   final String? bookId;
   final String? review;
   final String? reviewerUid;
+  final List<String>? likedUsers;
   final double? value;
   final NaverBookInfo? naverBookInfo;
   final DateTime? createdAt;
@@ -20,6 +21,7 @@ class Review extends Equatable {
     this.review,
     this.value,
     this.naverBookInfo,
+    this.likedUsers,
     this.createdAt,
     this.updatedAt,
     this.bookId,
@@ -35,6 +37,7 @@ class Review extends Equatable {
     String? review,
     String? reviewerUid,
     double? value,
+    List<String>? likedUsers,
     NaverBookInfo? naverBookInfo,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -43,6 +46,7 @@ class Review extends Equatable {
       bookId: bookId ?? this.bookId,
       review: review ?? this.review,
       reviewerUid: reviewerUid ?? this.reviewerUid,
+      likedUsers: likedUsers ?? this.likedUsers,
       value: value ?? this.value,
       naverBookInfo: naverBookInfo ?? this.naverBookInfo,
       createdAt: createdAt ?? this.createdAt,
@@ -59,5 +63,6 @@ class Review extends Equatable {
         updatedAt,
         bookId,
         reviewerUid,
+        likedUsers,
       ];
 }
