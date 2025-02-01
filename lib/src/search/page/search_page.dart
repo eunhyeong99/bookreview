@@ -55,8 +55,6 @@ class _SearchResultView extends StatefulWidget {
 class _SearchResultViewState extends State<_SearchResultView> {
   late SearchBookCubit cubit;
 
-
-
   @override
   void initState() {
     super.initState();
@@ -67,7 +65,9 @@ class _SearchResultViewState extends State<_SearchResultView> {
       }
     });
   }
+
   ScrollController controller = ScrollController();
+
   Widget _messageView(String message) {
     return Center(
       child: AppFont(
@@ -85,8 +85,8 @@ class _SearchResultViewState extends State<_SearchResultView> {
       itemBuilder: (context, index) {
         NaverBookInfo bookInfo = cubit.state.result!.items![index];
         return GestureDetector(
-          onTap: (){
-            context.push('/info',extra: bookInfo);
+          onTap: () {
+            context.push('/info', extra: bookInfo);
           },
           behavior: HitTestBehavior.translucent,
           child: Row(

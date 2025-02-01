@@ -5,6 +5,8 @@ import 'package:bookreview/src/common/repository/book_review_info_repository.dar
 import 'package:bookreview/src/common/repository/naver_api_repository.dart';
 import 'package:bookreview/src/common/repository/review_repository.dart';
 import 'package:bookreview/src/common/repository/user_repository.dart';
+import 'package:bookreview/src/home/cubit/recently_review_cubit.dart';
+import 'package:bookreview/src/home/cubit/top_reviewer_cubit.dart';
 import 'package:bookreview/src/home/page/home_page.dart';
 import 'package:bookreview/src/profile/cubit/user_profile_cubit.dart';
 import 'package:bookreview/src/profile/cubit/user_review_cubit.dart';
@@ -72,7 +74,23 @@ class _AppState extends State<App> {
         ),
         GoRoute(
           path: '/home',
-          builder: (context, state) => const HomePage(),
+          builder: (context, state) => MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                lazy: false,
+                create: (context) => RecentlyReviewCubit(
+                  context.read<BookReviewInfoRepository>(),
+                ),
+              ),
+              BlocProvider(
+                lazy: false,
+                create: (context) => TopReviewerCubit(
+                  context.read<UserRepository>(),
+                ),
+              ),
+            ],
+            child: const HomePage(),
+          ),
         ),
         GoRoute(
           path: '/info',

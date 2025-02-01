@@ -2,6 +2,7 @@ import 'package:bookreview/src/common/components/app_divider.dart';
 import 'package:bookreview/src/common/components/book_review_header_widget.dart';
 import 'package:bookreview/src/common/components/loading.dart';
 import 'package:bookreview/src/common/components/review_slider_bar.dart';
+import 'package:bookreview/src/common/cubit/authentication_cubit.dart';
 import 'package:bookreview/src/common/enum/common_state_status.dart';
 import 'package:bookreview/src/common/model/naver_book_info.dart';
 import 'package:bookreview/src/review/write/cubit/review_write_cubit.dart';
@@ -98,7 +99,11 @@ class ReviewWritePage extends StatelessWidget {
                     ),
                     actions: [
                       CupertinoDialogAction(
-                        child: AppFont('확인'),
+                        child: AppFont(
+                          '확인',
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
                         onPressed: context.pop,
                       ),
                     ],
@@ -106,6 +111,7 @@ class ReviewWritePage extends StatelessWidget {
                 },
               );
             }
+            await context.read<AuthenticationCubit>().updateReviewCounts();
             context.pop<bool>(true);
           },
           builder: (context, state) {
