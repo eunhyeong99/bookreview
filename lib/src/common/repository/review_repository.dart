@@ -35,4 +35,18 @@ class ReviewRepository {
         .doc(data.docs.first.id)
         .update(review.toJson());
   }
+
+  Future<List<Review>> loadMyAllReview(String uid) async {
+    try {
+      var doc = await db
+          .collection('review')
+          .where('reviewerUid', isEqualTo: uid)
+          .get();
+      return doc.docs
+          .map<Review>((data) => Review.fromJson(data.data()))
+          .toList();
+    } catch (e) {
+      return [];
+    }
+  }
 }

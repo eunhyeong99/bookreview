@@ -6,6 +6,9 @@ import 'package:bookreview/src/common/repository/naver_api_repository.dart';
 import 'package:bookreview/src/common/repository/review_repository.dart';
 import 'package:bookreview/src/common/repository/user_repository.dart';
 import 'package:bookreview/src/home/page/home_page.dart';
+import 'package:bookreview/src/profile/cubit/user_profile_cubit.dart';
+import 'package:bookreview/src/profile/cubit/user_review_cubit.dart';
+import 'package:bookreview/src/profile/page/user_profile_page.dart';
 import 'package:bookreview/src/review/detail/cubit/review_detail_cubit.dart';
 import 'package:bookreview/src/review/detail/page/review_detail_page.dart';
 import 'package:bookreview/src/review/write/cubit/review_write_cubit.dart';
@@ -126,6 +129,28 @@ class _AppState extends State<App> {
               context.read<UserRepository>(),
             ),
             child: const SignupPage(),
+          ),
+        ),
+        GoRoute(
+          path: '/profile/:uid',
+          builder: (context, state) => MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) => UserProfileCubit(
+                  context.read<UserRepository>(),
+                  state.pathParameters['uid'] as String,
+                ),
+                lazy: false,
+              ),
+              BlocProvider(
+                create: (context) => UserReviewCubit(
+                  context.read<ReviewRepository>(),
+                  state.pathParameters['uid'] as String,
+                ),
+                lazy: false,
+              ),
+            ],
+            child: const UserProfilePage(),
           ),
         ),
       ],

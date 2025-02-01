@@ -10,6 +10,8 @@ class UserModel extends Equatable {
   final String? email;
   final String? profile;
   final String? description;
+  final List<String>? followers;
+  final List<String>? followings;
 
   const UserModel({
     this.uid,
@@ -17,6 +19,8 @@ class UserModel extends Equatable {
     this.email,
     this.profile,
     this.description,
+    this.followers,
+    this.followings,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
@@ -30,6 +34,8 @@ class UserModel extends Equatable {
     String? uid,
     String? profile,
     String? description,
+    List<String>? followers,
+    List<String>? followings,
   }) {
     return UserModel(
       email: email ?? this.email,
@@ -37,6 +43,8 @@ class UserModel extends Equatable {
       uid: uid ?? this.uid,
       profile: profile ?? this.profile,
       description: description ?? this.description,
+      followers: followers ?? this.followers,
+      followings: followings ?? this.followings,
     );
   }
 
@@ -47,5 +55,7 @@ class UserModel extends Equatable {
         email,
         profile,
         description,
+        followers,
+        followings,
       ];
 }

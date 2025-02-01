@@ -72,49 +72,54 @@ class ReviewDetailPage extends StatelessWidget {
 class _ReviewInfoWidget extends StatelessWidget {
   const _ReviewInfoWidget({super.key});
 
-  Widget _profile(ReviewDetailState state) {
+  Widget _profile(ReviewDetailState state,BuildContext context) {
     if (state.review == null) return Container();
-    return Row(
-      children: [
-        CircleAvatar(
-          radius: 33,
-          backgroundColor: Colors.grey,
-          backgroundImage: state.userInfo?.profile == null
-              ? Image.network('assets/images/default_avatar.png').image
-              : Image.network(state.userInfo!.profile!).image,
-        ),
-        SizedBox(width: 15),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              AppFont(
-                state.userInfo?.name ?? '',
-                size: 18,
-                color: Color(0xffc9c9c9),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  AppFont(
-                    '공감 ${state.review!.likedUsers?.length ?? 0}개',
-                    size: 15,
-                    color: Color(0xffc9c9c9),
-                    fontWeight: FontWeight.bold,
-                  ),
-                  AppFont(
-                    AppDataUtil.dateFormat(
-                        'yyyy.MM.dd', state.review!.createdAt!),
-                    size: 12,
-                    color: Color(0xff878787),
-                    fontWeight: FontWeight.bold,
-                  ),
-                ],
-              ),
-            ],
+    return GestureDetector(
+      onTap: (){
+        context.push("/profile/${state.userInfo!.uid}");
+      },
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 33,
+            backgroundColor: Colors.grey,
+            backgroundImage: state.userInfo?.profile == null
+                ? Image.network('assets/images/default_avatar.png').image
+                : Image.network(state.userInfo!.profile!).image,
           ),
-        ),
-      ],
+          SizedBox(width: 15),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                AppFont(
+                  state.userInfo?.name ?? '',
+                  size: 18,
+                  color: Color(0xffc9c9c9),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    AppFont(
+                      '공감 ${state.review!.likedUsers?.length ?? 0}개',
+                      size: 15,
+                      color: Color(0xffc9c9c9),
+                      fontWeight: FontWeight.bold,
+                    ),
+                    AppFont(
+                      AppDataUtil.dateFormat(
+                          'yyyy.MM.dd', state.review!.createdAt!),
+                      size: 12,
+                      color: Color(0xff878787),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -128,7 +133,7 @@ class _ReviewInfoWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              _profile(state),
+              _profile(state,context),
               const SizedBox(height: 30),
               AppFont(
                 state.review?.review ?? '',
